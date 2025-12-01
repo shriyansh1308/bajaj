@@ -1,0 +1,51 @@
+package com.test.bajajtest;
+
+import com.test.bajajtest.dto.GenerateResponse;
+import com.test.bajajtest.service.BajajService;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+@SpringBootApplication
+public class BajajTestApplication implements CommandLineRunner {
+
+    private final BajajService bajajService;
+
+    public BajajTestApplication(BajajService bajajService) {
+        this.bajajService = bajajService;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(BajajTestApplication.class, args);
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        // 🔴 Put YOUR details here
+        String name = "CHITRA SHRIYANSH";
+        String regNo = "22BCE9062";
+        String email = "shriyansh1308@gmail.com";
+
+        // 1️⃣ API Call to Generate webhook
+        GenerateResponse response = bajajService.generate(name, regNo, email);
+
+        System.out.println("Webhook URL: " + response.getWebhookUrl());
+        System.out.println("Access Token: " + response.getAccessToken());
+        System.out.println("👉 Open webhook URL to see SQL question");
+
+        // 2️⃣ After solving SQL, update the query below
+        String sql = "SELECT ..."; // TODO - replace later
+
+        // 3️⃣ Submit final answer
+        bajajService.submit(response.getAccessToken(), sql);
+        System.out.println("🎯 Done!");
+    }
+}
