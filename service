@@ -1,0 +1,47 @@
+package com.test.bajajtest.service;
+
+import com.test.bajajtest.dto.FinalSubmit;
+import com.test.bajajtest.dto.GenerateRequest;
+import com.test.bajajtest.dto.GenerateResponse;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+public class BajajService {
+
+    private final RestTemplate restTemplate;
+
+    private static final String GEN_URL =
+            "https://bfhldevapigw.healthrx.co.in/hiring/generateWebhook/JAVA";
+
+    private static final String SUBMIT_URL =
+            "https://bfhldevapigw.healthrx.co.in/hiring/testWebhook/JAVA";
+
+    public BajajService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public GenerateResponse generate(String name, String regNo, String email) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        GenerateRequest body = new GenerateRequest(name, regNo, email);
+
+        HttpEntity<GenerateRequest> entity = new HttpEntity<>(body, headers);
+
+        return restTemplate.postForObject(GEN_URL, entity, GenerateResponse.class);
+    }
+
+    public void submit(String token, String sql) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", token);  // as per problem
+
+        FinalSubmit body = new FinalSubmit(sql);
+
+        HttpEntity<FinalSubmit> entity = new HttpEntity<>(body, headers);
+
+        restTemplate.postForObject(SUBMIT_URL, entity, String.class);
+    }
+}
