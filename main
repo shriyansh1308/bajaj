@@ -42,7 +42,15 @@ public class BajajTestApplication implements CommandLineRunner {
         System.out.println("👉 Open webhook URL to see SQL question");
 
         // 2️⃣ After solving SQL, update the query below
-        String sql = "SELECT ..."; // TODO - replace later
+        String sql = ""SELECT d.DEPARTMENT_NAME, " +
+        "AVG(EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM e.DOB)) AS AVERAGE_AGE, " +
+        "STRING_AGG(e.FIRST_NAME || ' ' || e.LAST_NAME, ', ' ORDER BY e.EMP_ID LIMIT 10) AS EMPLOYEE_LIST " +
+        "FROM DEPARTMENT d " +
+        "JOIN EMPLOYEE e ON d.DEPARTMENT_ID = e.DEPARTMENT " +
+        "JOIN PAYMENTS p ON e.EMP_ID = p.EMP_ID " +
+        "WHERE p.AMOUNT > 70000 " +
+        "GROUP BY d.DEPARTMENT_ID, d.DEPARTMENT_NAME " +
+        "ORDER BY d.DEPARTMENT_ID DESC;"; // TODO - replace later
 
         // 3️⃣ Submit final answer
         bajajService.submit(response.getAccessToken(), sql);
