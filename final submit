@@ -1,0 +1,20 @@
+package com.test.bajajtest.dto;
+
+public class FinalSubmit {
+    private String finalQuery;
+
+    public FinalSubmit() {
+    }
+
+    public FinalSubmit(String finalQuery) {
+        this.finalQuery = finalQuery;
+    }
+
+    public String getFinalQuery() {
+        return finalQuery;
+    }
+
+    public void setFinalQuery(String finalQuery) {
+        this.finalQuery = finalQuery;
+    }
+}
